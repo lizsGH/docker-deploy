@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  mariadb:
+    image: lizsdocker/mariadb:1.0
+    # restart: always
+    ports: 
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+    volumes:
+      - /var/docker/mariadb/initdb.d:/docker-entrypoint-initdb.d
+      - /var/docker/mariadb/backups:/var/mysql/backups
+

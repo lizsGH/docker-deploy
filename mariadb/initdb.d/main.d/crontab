@@ -1,0 +1,20 @@
+# crontab format:
+# min hour dom mon dow command
+# - min: minute, 0-59
+# - hour: 0-23
+# - dom: 1-31
+# - mon: 1-12
+# - dow: 0-6, 0, Sunday
+# - command: the running command
+# 
+# e.g. save the date message per min
+# * * * * * date >> /tmp/date.log
+#
+
+
+# test
+# * * * * * /usr/bin/env date >> "$BACKUP_DIR/date.log"
+# backup the database everyday
+0 0 * * * /usr/bin/env mysqldump -uroot -p"$MYSQL_ROOT_PASSWORD" --databases mysql | /usr/bin/env gzip > "$BACKUP_DIR/mysql_$(date +\%Y\%m\%d\%M).sql.gz"
+# delete the backup 30 days ago
+0 0 * * * /usr/bin/env find $BACKUP_DIR -name "*.gz" -mtime +30 | xargs rm -rf

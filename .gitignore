@@ -1,0 +1,10 @@
+/.idea
+*.swp
+
+# mariadb db backup files
+/mariadb/backups/*
+!/mariadb/backups/README.txt
+
+/tmp
+/www/*
+!/www/README

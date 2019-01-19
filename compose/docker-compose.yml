@@ -1,0 +1,89 @@
+version: '3'
+
+services:
+
+  nginx:
+    image: nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/docker/www:/var/www/
+      - /var/docker/nginx/etc/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - /var/docker/nginx/etc/nginx/conf.d:/etc/nginx/conf.d
+      # - /var/docker/nginx/var/log/nginx:/var/log/nginx
+    depends_on:
+      # - php5.6
+      - php7.0
+      - phpmyadmin
+
+  mysql:
+    image: lizsdocker/mariadb:latest
+    # image: mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - /var/docker/mysql/etc/mysql/my.cnf:/etc/mysql/my.cnf
+      - /var/docker/mysql/etc/mysql/conf.d:/etc/mysql/conf.d
+      # - /var/docker/mysql/var/lib/mysql:/var/lib/mysql
+      # - mysql-data:/var/lib/mysql
+      - mariadb-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - mysql:db
+    depends_on:
+      - mysql
+
+  # php5.6:
+  #   image: lizsdocker/php:5.6-fpm
+  #   volumes:
+  #     - /var/docker/www:/var/www/html
+  #     - /var/docker/php/5.6/usr/local/etc/php-fpm.conf:/usr/local/etc/php-fpm.conf
+  #     - /var/docker/php/5.6/usr/local/etc/php-fpm.d:/usr/local/etc/php-fpm.d
+  #   depends_on:
+  #     - mysql
+
+  php7.0:
+    image: lizsdocker/php:7.0-fpm
+    volumes:
+      - /var/docker/www:/var/www/html
+      - /var/docker/php/7.0/usr/local/etc/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - /var/docker/php/7.0/usr/local/etc/php-fpm.d:/usr/local/etc/php-fpm.d
+    depends_on:
+      - mysql
+
+  # mongodb:
+  #   image: mongo:latest
+  #   ports:
+  #     - 27017:27017
+  #   volumes:
+  #     - /var/docker/mongodb/etc/mongod.conf.orig:/etc/mongod.conf.orig
+
+  persistence:
+    image: ubuntu:18.04
+    volumes:
+      - mariadb-data:/var/lib/mysql
+
+  # myproject:
+  #   image: myproject:1.0
+  #   # ports:
+  #   #   - 8000:8000
+  #   volumes:
+  #     - /var/docker/www/myproject:/var/app
+  #   depends_on:
+  #     - mysql
+  #   environment:
+  #     - PROJECT=myproject
+  #     - GUNICORN_WORKERS=4
+  #     - GUNICORN_WORKERCLASS=eventlet
+  #   # command: gunicorn -b 0.0.0.0:8000 -w 4 -k eventlet --reload miaomiaodai.wsgi
+
+volumes:
+  mariadb-data:
+  # mysql-data:
+  # mongo-data:
+
