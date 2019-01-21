@@ -63,6 +63,7 @@ services:
   #   volumes:
   #     - /var/docker/mongodb/etc/mongod.conf.orig:/etc/mongod.conf.orig
 
+  # this container do nothing, but preventing to delete volume data by mistake.
   persistence:
     image: ubuntu:18.04
     volumes:
