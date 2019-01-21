@@ -23,10 +23,9 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - /var/docker/mysql/etc/mysql/my.cnf:/etc/mysql/my.cnf
-      - /var/docker/mysql/etc/mysql/conf.d:/etc/mysql/conf.d
-      # - /var/docker/mysql/var/lib/mysql:/var/lib/mysql
-      # - mysql-data:/var/lib/mysql
+      - /var/docker/mariadb/initdb.d:/docker-entrypoint-initdb.d
+      - /var/docker/mariadb/etc/mysql/my.cnf:/etc/mysql/my.cnf
+      - /var/docker/mariadb/etc/mysql/conf.d:/etc/mysql/conf.d
       - mariadb-data:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=123456
@@ -78,10 +77,9 @@ services:
   #   depends_on:
   #     - mysql
   #   environment:
-  #     - PROJECT=myproject
-  #     - GUNICORN_WORKERS=4
-  #     - GUNICORN_WORKERCLASS=eventlet
-  #   # command: gunicorn -b 0.0.0.0:8000 -w 4 -k eventlet --reload miaomiaodai.wsgi
+  #     - APP=myproject
+  #     - PORT=8000
+  #     - GUNICORN_CMD_ARGS="--bind=127.0.0.1:8000 --workers=4 --worker-class=eventlet --error-logfile /var/log/error.log --access-logfile /var/log/access.log"
 
 volumes:
   mariadb-data:
