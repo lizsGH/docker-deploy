@@ -2,7 +2,7 @@ version: '3'
 
 services:
   mariadb:
-    image: lizsdocker/mariadb:1.0
+    image: lizsdocker/mariadb
     # restart: always
     ports: 
       - 3306:3306

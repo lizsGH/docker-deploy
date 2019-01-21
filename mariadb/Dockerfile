@@ -10,6 +10,8 @@ RUN echo "export EDITOR=vim" >> ~/.bashrc && \
 	chmod 440 /etc/sudoers.d/mysql
 
 ENV INIT_DIR=/docker-entrypoint-initdb.d
+
+COPY initdb.d $INIT_DIR/ 
 # database backup directory
 ENV BACKUP_DIR=/var/mysql/backups
 
