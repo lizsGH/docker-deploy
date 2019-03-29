@@ -55,18 +55,26 @@ services:
     depends_on:
       - mysql
 
-  # mongodb:
+    # mongodb:
   #   image: mongo:latest
   #   ports:
   #     - 27017:27017
   #   volumes:
   #     - /var/docker/mongodb/etc/mongod.conf.orig:/etc/mongod.conf.orig
 
-  # this container do nothing, but preventing to delete volume data by mistake.
-  persistence:
-    image: ubuntu:18.04
+  redis:
+    image: lizsdocker/redis:latest
+    ports:
+      - 6379:6379
     volumes:
-      - mariadb-data:/var/lib/mysql
+      - /var/docker/redis/etc/redis/redis.conf:/etc/redis/redis.conf
+      - redis-data:/data
+
+  # this container do nothing, but preventing to delete volume data by mistake.
+  # persistence:
+  #   image: ubuntu:18.04
+  #   volumes:
+  #     - mariadb-data:/var/lib/mysql
 
   # myproject:
   #   image: myproject:1.0
@@ -83,6 +91,7 @@ services:
 
 volumes:
   mariadb-data:
+  redis-data:
   # mysql-data:
   # mongo-data:
 
